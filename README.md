@@ -30,7 +30,7 @@ Will likely work on either raspberry pi or on a desktop/laptop
 
 #### Testing
 
-Will likely only work on raspberry pi unless we set it up to output the image
+Modify `screen_updater.py` so the the `DEBUG` flag is `True`. This will turn off the screen library import and display the image instead.
 
 `python screen_updater.py`
 
