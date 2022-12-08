@@ -12,9 +12,6 @@ if not DEBUG:
 
 ########### Screen Update Methods ###########
 
-
-
-
 def get_screen(current_time, start_time, end_time, current_icon, next_icon):
     print(f'current_time: {current_time}')
     print(f'start_time: {start_time}')
@@ -22,7 +19,7 @@ def get_screen(current_time, start_time, end_time, current_icon, next_icon):
     print(f'current_icon: {current_icon}')
     print(f'next_icon: {next_icon}')
     progress = (current_time - start_time) / (end_time - start_time)
-    print(f'progress: {progress}')
+    print(f'progress: {progress:.4f}')
     if DEBUG:
         return Image.new('1', (400, 300))
     else:
@@ -52,6 +49,7 @@ def get_info():
         icons = []
         time_strings = []
         current_time = datetime.now()
+        raise Exception("get_info() not implemented")
     try:
         # Convert strings into datetime objects
         times = [datetime.combine(date.today(), time(*map(int, t.split(':')))) for t in time_strings]
