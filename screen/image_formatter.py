@@ -16,7 +16,12 @@ def convert_to_3_colors(img_in):
 
     # Use the PIL image mode "P" to create a 3-color image
     # (also known as a "palette" image)
-    img = img.convert("P", palette=Image.ADAPTIVE, colors=3)
+    palette = [
+        0, 0, 0,
+        255, 255, 255,
+        255, 0, 0
+    ]
+    img = img.convert("P", palette=palette, colors=3)
 
     # Save the new image
     print(img.load()[0, 0])
@@ -27,7 +32,7 @@ def crop_to_circle(img_in, radius):
     img = img.convert("RGB")
     img = crop_to_square(img)
     # Resize the image to fit inside the circle
-    img.thumbnail((radius * 2, radius * 2), Image.ANTIALIAS)
+    img.thumbnail((radius * 2, radius * 2), Image.Resampling.LANCZOS)
     print(img.size)
 
     # Create an alpha mask
@@ -66,19 +71,21 @@ def draw_semicircle(img_in, ratio, thickness):
 
     return arc_img
 
-def get_icon(path, ratio):
-    img = Image.open(path)
+def get_icon(img_in, ratio):
+    img = img_in.copy()
     img = img.convert("1")
     img = crop_to_circle(img, 100)
-    img = draw_semicircle(img, .75, 5)
+    img = draw_semicircle(img, ratio, 5)
     img = convert_to_3_colors(img)
     return img
 
 if __name__ == "__main__":
-    path = "input.png";
-    img = Image.open(path)
-    img = img.convert("1")
-    img = crop_to_circle(img, 100)
-    img = draw_semicircle(img, .75, 5)
-    img = convert_to_3_colors(img)
-    img.save("3-color.png")
+    import notion_impl
+    entries = notion_impl.get_entries()
+    img = entries[0].get('image')
+    if img == None:
+        print("No image found for entry")
+        exit(1)
+    img.show()
+    icon_img = get_icon(img, 0.96)
+    icon_img.show()

@@ -1,4 +1,4 @@
-import sqlite3
+import logging
 from datetime import date, time, datetime, timedelta
 from PIL import Image, ImageDraw
 
@@ -34,10 +34,6 @@ def display(image):
 ############# Database handling #############
 # https://flask.palletsprojects.com/en/2.0.x/patterns/sqlite3/
 
-def get_db():
-    db = sqlite3.connect(DATABASE)
-    return db
-
 def get_info():
     if DEBUG:
         icons = ["1.png", "2.png", "3.png", "4.png", "5.png"]
@@ -53,7 +49,7 @@ def get_info():
     try:
         # Convert strings into datetime objects
         times = [datetime.combine(date.today(), time(*map(int, t.split(':')))) for t in time_strings]
-    except:
+    except Exception as e:
         print(f'Error converting user-supplied times to datetimes {times}')
         raise e
     return current_time, icons, times
